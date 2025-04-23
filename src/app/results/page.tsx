@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { BusinessCard } from "@/app/components/layout/business-card";
+import SearchComponent from "@/app/components/layout/search-component";
 
 export default function Home() {
   const sampleBusiness = {
@@ -24,12 +25,15 @@ export default function Home() {
   };
 
   return (
-    <div className="grid grid-cols-5 gap-4 p-8">
-      <BusinessCard business={sampleBusiness} />
-      <BusinessCard business={sampleBusiness} />
-      <BusinessCard business={sampleBusiness} />
-      <BusinessCard business={sampleBusiness} />
-      <BusinessCard business={sampleBusiness} />
+    <div>
+      <SearchComponent />
+      <div className="grid grid-cols-5 gap-4 p-8">
+        <BusinessCard business={sampleBusiness} />
+        <BusinessCard business={sampleBusiness} />
+        <BusinessCard business={sampleBusiness} />
+        <BusinessCard business={sampleBusiness} />
+        <BusinessCard business={sampleBusiness} />
+      </div>
     </div>
   );
 }
