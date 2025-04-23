@@ -1,19 +1,19 @@
-import { Button } from "@/components/ui/button"
-
 export function Navbar() {
   return (
     <header className="bg-white border-b sticky top-0 z-10">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <div className="text-2xl font-bold text-red-500">FoodFinder</div>
-        <div className="flex items-center gap-4">
-          <Button variant="outline" size="sm">
+      <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <a href="/" className="text-2xl font-bold text-red-500 hover:text-red-600">
+          Nutri Checker
+        </a>
+        <nav className="flex items-center gap-4">
+          <a href="/signin" className="px-4 py-2 text-sm border rounded-md hover:bg-gray-50">
             Sign In
-          </Button>
-          <Button size="sm" className="bg-red-500 hover:bg-red-600">
+          </a>
+          <a href="/signup" className="px-4 py-2 text-sm rounded-md bg-red-500 hover:bg-red-600 text-white">
             Sign Up
-          </Button>
-        </div>
-      </div>
+          </a>
+        </nav>
+      </nav>
     </header>
   )
-} 
+}

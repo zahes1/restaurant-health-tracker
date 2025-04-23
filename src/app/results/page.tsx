@@ -39,6 +39,7 @@ interface Location {
 
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 2000; // 2 seconds
+import SearchComponent from "@/app/components/layout/search-component";
 
 export default function ResultsPage() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([])

@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Slider } from "@/components/ui/slider"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Navbar } from "@/components/Navbar"
 
 export default function Home() {
   const hardcodedCuisineTypes = ["all", "italian", "chinese", "mexican", "indian"]
@@ -20,22 +21,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="sticky top-0 z-10 bg-white border-b">
-        <div className="container px-4 py-4 mx-auto">
-          <div className="flex items-center justify-between">
-            <div className="text-2xl font-bold text-red-500">FoodFinder</div>
-            <div className="flex items-center gap-4">
-              <Button variant="outline" size="sm">
-                Sign In
-              </Button>
-              <Button size="sm" className="bg-red-500 hover:bg-red-600">
-                Sign Up
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
-
+      <Navbar />
       <main className="container px-4 py-6 mx-auto">
         <div className="flex flex-col gap-6">
           {/* Search and Location Bar */}
