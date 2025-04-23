@@ -2,8 +2,9 @@
 
 import React, { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { Card, CardContent } from "@/components/ui/card"
 import { Navbar } from "@/components/Navbar"
+import SearchComponent from "@/app/components/layout/search-component"
+import { RestaurantCard } from "@/app/components/RestaurantCard"
 
 interface Restaurant {
   id: string
@@ -39,7 +40,6 @@ interface Location {
 
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 2000; // 2 seconds
-import SearchComponent from "@/app/components/layout/search-component";
 
 export default function ResultsPage() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([])
@@ -104,6 +104,7 @@ export default function ResultsPage() {
         }
 
         setRestaurants(data.business_search_result)
+        console.log("Restaurants data:", data.business_search_result)
       } catch (err) {
         console.error("Error fetching restaurants:", err)
         setError(err instanceof Error ? err.message : "An error occurred")
@@ -122,7 +123,7 @@ export default function ResultsPage() {
         <main className="flex-1 container mx-auto px-4 py-8">
           <div className="text-center">
             <div className="mb-4">Loading restaurants...</div>
-            <div className="text-sm text-gray-500">This might take a few moments</div>
+            <div className="text-sm text-gray-500">This might take a few seconds</div>
           </div>
         </main>
       </div>
@@ -164,51 +165,19 @@ export default function ResultsPage() {
     )
   }
 
+  console.log("Rendering restaurants:", restaurants)
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
+      <SearchComponent />
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">Restaurants Near {JSON.parse(localStorage.getItem("searchLocation") || "{}").address}</h1>
-          <button 
-            onClick={() => router.push("/")}
-            className="text-blue-500 hover:underline"
-          >
-            Change Location
-          </button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {restaurants.map((restaurant) => (
-            <Card key={restaurant.id} className="overflow-hidden">
-              <div className="relative h-48">
-                <img
-                  src={restaurant.photo_url || "/placeholder-restaurant.jpg"}
-                  alt={restaurant.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <CardContent className="p-4">
-                <h2 className="text-xl font-semibold mb-2">{restaurant.name}</h2>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-yellow-500">★</span>
-                  <span>{restaurant.avg_rating} ({restaurant.review_count} reviews)</span>
-                </div>
-                <p className="text-gray-600 mb-2">{restaurant.localized_price || "Price not available"}</p>
-                <p className="text-gray-600">
-                  {restaurant.address1}, {restaurant.city}, {restaurant.state} {restaurant.zip}
-                </p>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {restaurant.categories.map((category) => (
-                    <span
-                      key={category.name}
-                      className="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-sm"
-                    >
-                      {category.name}
-                    </span>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            <RestaurantCard key={restaurant.id} restaurant={restaurant} />
           ))}
         </div>
       </main>

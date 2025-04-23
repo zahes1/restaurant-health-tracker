@@ -24,13 +24,35 @@ export default function Home() {
   const router = useRouter()
 
   useEffect(() => {
-    // Define the callback function that will be called when the API loads
-    window.initMap = () => {
-      console.log("Google Places API loaded successfully")
+    let scriptElement: HTMLScriptElement | null = null;
+
+    const loadGoogleMapsAPI = () => {
+      // Check if the API is already loaded
+      if (window.google?.maps?.places) {
+        initializeAutocomplete();
+        return;
+      }
+
+      // Define the callback function that will be called when the API loads
+      window.initMap = () => {
+        console.log("Google Places API loaded successfully")
+        initializeAutocomplete();
+      }
+
+      // Load Google Places API
+      scriptElement = document.createElement("script")
+      const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+      scriptElement.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initMap`
+      scriptElement.async = true
+      scriptElement.defer = true
+      document.head.appendChild(scriptElement)
+    }
+
+    const initializeAutocomplete = () => {
       const input = document.getElementById("address-input") as HTMLInputElement
-      if (input) {
+      if (input && window.google?.maps?.places) {
         const autocomplete = new window.google.maps.places.Autocomplete(input, {
-          types: ["geocode"], // This allows both cities and addresses
+          types: ["geocode"],
           componentRestrictions: { country: "us" }
         })
         setAutocomplete(autocomplete)
@@ -46,18 +68,17 @@ export default function Home() {
       }
     }
 
-    // Load Google Places API
-    const script = document.createElement("script")
-    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initMap`
-    script.async = true
-    script.defer = true
-    document.head.appendChild(script)
+    loadGoogleMapsAPI();
 
+    // Cleanup function
     return () => {
-      // Clean up
-      document.head.removeChild(script)
-      delete window.initMap
+      if (scriptElement && document.head.contains(scriptElement)) {
+        document.head.removeChild(scriptElement)
+      }
+      if ('initMap' in window) {
+        // @ts-ignore
+        window.initMap = undefined;
+      }
     }
   }, [])
 
@@ -152,6 +173,7 @@ export default function Home() {
                     <div className="relative flex-1">
                       <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                       <Input
+                        id="address-input"
                         placeholder="Enter your address"
                         className="pl-10 h-12 text-black"
                         value={address}
@@ -207,19 +229,3 @@ export default function Home() {
     </div>
   )
 }
-
-// Sample cuisine data
-const cuisines = [
-  { name: "Pizza", image: "/cuisine-pizza.png" },
-  { name: "Burgers", image: "/cuisine-burger.png" },
-  { name: "Chinese", image: "/cuisine-chinese.png" },
-  { name: "Italian", image: "/cuisine-italian.jpg" },
-  { name: "Mexican", image: "/cuisine-mexican.jpg" },
-  { name: "Sushi", image: "/cuisine-sushi.jpg" },
-  { name: "Indian", image: "/cuisine-indian.jpg" },
-  { name: "Thai", image: "/cuisine-thai.jpg" },
-  { name: "Dessert", image: "/cuisine-dessert.jpg" },
-  { name: "Healthy", image: "/cuisine-healthy.jpg" },
-  { name: "Breakfast", image: "/cuisine-breakfast.jpg" },
-  { name: "Vegan", image: "/cuisine-vegan.jpg" },
-]
