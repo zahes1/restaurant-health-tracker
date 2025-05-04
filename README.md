@@ -1,3 +1,12 @@
+# Restaurant Health Tracker / Nutri Checker
+
+**Created by Zachary Orban**
+
+The Restaurant Health Tracker or Nutri Checker is a web app built with Next.js and Typescript. This app allows the user to input a location manually, then shows nearby restaurants based on this provide location. These restaurants all have viewable menus integrated as well, and each item on the menu you can check the nutrition information. This tool was made for my 2025 SWE course project.
+
+
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
